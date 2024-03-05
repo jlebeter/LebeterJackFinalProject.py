@@ -1,0 +1,125 @@
+from tkinter import *
+from datetime import datetime
+
+#This code im0ports Tkinter and creates a Main Window.
+mainWindow = Tk()
+mainWindow.title("Main Window")
+
+#This code includes a visual with the name of the application and a short sentence describing its function.
+image_logo = PhotoImage(file="EmotiTracker Logo.png")
+image_mood = PhotoImage(file="Mood Window Picture.png")
+
+#This places the visual photo in the main window.
+image_label= Label(mainWindow, image=image_logo)
+image_label.pack()
+
+
+#This code creates the second window where the user can rate their current mood on a scale from 1 being very said, to 5 being very happy.
+#This code also outputs the directions for the page and a modifies the directions to be a larger font.
+def mood_window():
+    mood_window_instance = Toplevel()
+    mood_window_instance.title("Mood Rating Window")
+    questionLabel = Label(mood_window_instance, text="On a scale from 1 to 5, how is your current mood?")
+    questionLabel.config(font=("Arial", 30))
+    questionLabel.pack()
+
+    #This code includes a visual of the mood scale to help the user choose the core=rect input based on their current mood.
+    image_label = Label(mood_window_instance, image=image_mood)
+    image_label.pack()
+
+    #This code provides a short statement of encouragement to support the user.
+    supportLabel = Label(mood_window_instance, text="Remember, wherever you are on this scale, your feelings are valid, and there's always hope for brighter days ahead.")
+    supportLabel.config(font=("Arial", 15))
+    supportLabel.pack()
+
+    #This code has the same function as the one above.
+    twosupportLabel = Label(mood_window_instance, text= "Take care of yourself and reach out for support if you need it. You're never alone in your journey towards happiness and well-being.")
+    twosupportLabel.config(font=("Arial", 15))
+    twosupportLabel.pack()
+
+    #This code creates a third window where the user can journal about their current feelings. It provides an entry box and more words of encouragement.
+    def open_journal_entry(feedback_text):
+        journal_entry = Toplevel()
+        journal_entry.title("Journal Entry Window")
+        journalLabel = Label(journal_entry,text="Take a moment to reflect on why you are feeling this way. Be sure to include the DATE, the WEATHER, and your MOOD RATING.")
+        journalLabel.config(font=("Arial", 16))
+        journalLabel.pack()
+
+    #This code is made to change the font and the size of the text that the user enters in the journaling box.
+        feedbackLabel=(Label(journal_entry, text=feedback_text))
+        feedbackLabel.config(font=("Arial", 10))
+        feedbackLabel.pack()
+
+        #This code provides a button to save the journal entry into a folder and has a title of the current date.
+        def save_to_file():
+            text = entry.get("1.0", END)
+            current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            with open("Mood Tracker Journal Entries.txt", "a") as file:
+                file.write(f"{current_date}: {text}\n")
+                print("Text saved to file.")
+
+                #This code utilizes the save button to also act as an exit button by closing all of the windows.
+                journal_entry.destroy()
+                mood_window_instance.destroy()
+                mainWindow.destroy()
+
+        #This code modifies the Save Entry button to have a black backround with large white text.
+        save_button = Button(journal_entry, text="Save Entry", bg="black", fg="white", command=save_to_file)
+        save_button.config(font=("Arial", 20))
+        save_button.pack()
+
+        #This code provides an etry window for the user to type in for today's journal entry
+        entry = Text(journal_entry, width=100, height=100)
+        entry.config(font=("Arial", 10))
+        entry.pack(padx=10, pady=10)
+
+#This code is used to show what happens when the button to rate the user's mood is clicked.
+#A journal entry window is opened and a helpful advice statement is printed.
+    def oneClick():
+        feedback_text="Even in the darkest moments, there's a glimmer of light waiting to shine. You're not alone, and brighter days are ahead. Seek some inner peace by writing. If needed, find guidance and talk to someone you trust."
+        open_journal_entry(feedback_text)
+
+    def twoClick():
+         feedback_text="Acknowledging your feelings is the first step toward healing. Remember, storms don't last forever, and the sun will eventually break through the clouds. Take some time for yourself and write about how you are feeling."
+         open_journal_entry(feedback_text)
+
+    def threeClick():
+         feedback_text="Just feeling meh today? Every moment, whether high or low, is a part of your journey. Embrace this moment and take the opportunity for growth and self-discovery through writing."
+         open_journal_entry(feedback_text)
+
+    def fourClick():
+         feedback_text="Good! I am glad that you are feeling yourself. You're on the right track! Your positive energy is contagious, and there's so much more joy waiting to unfold. Take a moment to spread your positivity throught writing."
+         open_journal_entry(feedback_text)
+
+    def fiveClick():
+         feedback_text="You're radiating happiness! Your resilience and optimism are truly inspiring. Keep spreading that joy and cherishing every moment of this wonderful feeling. Take a moment to reflect on why you are feeling so upbeat to help yourself in the future."
+         open_journal_entry(feedback_text)
+
+    #This code creates 5 buttons with numbers and colors coordinating with the mood rating scale.
+    oneButton = Button(mood_window_instance, text="1", fg="red", bg="black", padx=200, pady=2, command=oneClick)
+    oneButton.config(font=("Arial", 18))
+    oneButton.pack()
+
+    twoButton = Button(mood_window_instance, text="2", fg="orange", bg="black", padx=200, pady=2, command=twoClick)
+    twoButton.config(font=("Arial", 18))
+    twoButton.pack()
+
+    threeButton = Button(mood_window_instance, text="3", fg="yellow", bg="black", padx=200, pady=2, command=threeClick)
+    threeButton.config(font=("Arial", 18))
+    threeButton.pack()
+
+    fourButton = Button(mood_window_instance, text="4", fg="green", bg="black", padx=200, pady=2, command=fourClick)
+    fourButton.config(font=("Arial", 18))
+    fourButton.pack()
+
+    fiveButton = Button(mood_window_instance, text="5", fg="blue", bg="black", padx=200, pady=2, command=fiveClick)
+    fiveButton.config(font=("Arial", 18))
+    fiveButton.pack()
+
+#This creates a button on the main page that opens the mood rating window when clicked
+mainWindow.button = Button(mainWindow, text="Rate My Current Mood", bg="black", fg="white",padx=200, pady=50, command=mood_window)
+mainWindow.button.config(font=("Arial", 20))
+mainWindow.button.pack()
+
+#This code creates a loop so the program does not end until the SAve Entry buttonb is pushed.
+mainWindow.mainloop()
